@@ -82,7 +82,7 @@ public class FileFilter {
         }
     }
 
-    public static synchronized void saveFloatData(String dataFloat) throws IOException {
+    public static void saveFloatData(String dataFloat) throws IOException {
         File floatsOutput = new File(outputPath + "/" + filePrefix + "floats" + ".txt");
 
         if (isOverride)
@@ -100,7 +100,7 @@ public class FileFilter {
 
     }
 
-    public static synchronized void saveIntegerData(String dataInteger) throws IOException {
+    public static void saveIntegerData(String dataInteger) throws IOException {
         File integersOutput = new File(outputPath + "/" + filePrefix + "integers" + ".txt");
 
         if (isOverride)
@@ -118,7 +118,7 @@ public class FileFilter {
 
     }
 
-    public static synchronized void saveStringData(String dataString) throws IOException {
+    public static void saveStringData(String dataString) throws IOException {
         File stringsOutput = new File(outputPath + "/" + filePrefix + "strings" + ".txt");
         if (isOverride)
             if (stringOverride) {

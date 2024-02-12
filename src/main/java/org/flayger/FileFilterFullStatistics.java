@@ -4,12 +4,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 
-public class FileFilterFullStatistics implements FileFilterStatistics{
+public class FileFilterFullStatistics implements FileFilterStatistics {
 
     private static Integer intsCount = 0;
     private static Integer floatsCount = 0;
     private static Integer stringsCount = 0;
-
 
     private static BigInteger intsMaxValue;
     private static BigInteger intsMinValue;
@@ -23,6 +22,7 @@ public class FileFilterFullStatistics implements FileFilterStatistics{
 
     private static BigInteger stringsMaxLength;
     private static BigInteger stringsMinLength;
+
     @Override
     public void updateStatistics(BigDecimal floatData) {
         floatsCount++;
