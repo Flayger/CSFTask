@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileFilter {
-
     private static boolean floatOverride = true;
     private static boolean intOverride = true;
     private static boolean stringOverride = true;
@@ -25,21 +24,27 @@ public class FileFilter {
         argsCommandLineProcessing(args);
 
         try {
-            outputPath = Path.of(new File(FileFilter.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath() + outputFilesPath);
+            outputPath = Path.of(new File(FileFilter.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath() + outputFilesPath + "/");
             Files.createDirectories(outputPath);
-            for (String file : fileNames) {
-                readFileAndFilterData(file);
-            }
         } catch (IOException | URISyntaxException e) {
             System.out.println("Ошибка - Не удалось создать директорию для файлов вывода");
+            outputPath = null;
+        }
+        for (String file : fileNames) {
+            try {
+                readFileAndFilterData(file);
+            } catch (Exception e) {
+                System.out.println("Ошибка во время работы с файлом");
+            }
         }
         if (selectedStatistics != null)
             selectedStatistics.showStatistics();
     }
 
     public static void argsCommandLineProcessing(String[] args) {
-        if (args.length == 0)
-            System.out.println("Ошибка. Должен быть указан хотя бы один параметр - путь к файлу источнику");
+        if (args.length == 0) {
+            throw new RuntimeException("Ошибка. Должен быть указан хотя бы один параметр - путь к файлу источнику");
+        }
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "-p" -> {
@@ -64,7 +69,7 @@ public class FileFilter {
         }
     }
 
-    public static void readFileAndFilterData(String file) {
+    public static void readFileAndFilterData(String file) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line = reader.readLine();
             while (line != null) {
@@ -77,13 +82,11 @@ public class FileFilter {
                 }
                 line = reader.readLine();
             }
-        } catch (IOException e) {
-            System.out.println("Ошибка при сохранении файла");
         }
     }
 
     public static void saveFloatData(String dataFloat) throws IOException {
-        File floatsOutput = new File(outputPath + "/" + filePrefix + "floats" + ".txt");
+        File floatsOutput = new File(outputPath + filePrefix + "floats" + ".txt");
 
         if (isOverride)
             if (floatOverride) {
@@ -101,7 +104,7 @@ public class FileFilter {
     }
 
     public static void saveIntegerData(String dataInteger) throws IOException {
-        File integersOutput = new File(outputPath + "/" + filePrefix + "integers" + ".txt");
+        File integersOutput = new File(outputPath + filePrefix + "integers" + ".txt");
 
         if (isOverride)
             if (intOverride) {
@@ -119,7 +122,7 @@ public class FileFilter {
     }
 
     public static void saveStringData(String dataString) throws IOException {
-        File stringsOutput = new File(outputPath + "/" + filePrefix + "strings" + ".txt");
+        File stringsOutput = new File(outputPath + filePrefix + "strings" + ".txt");
         if (isOverride)
             if (stringOverride) {
                 Files.deleteIfExists(stringsOutput.toPath());
