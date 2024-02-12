@@ -5,9 +5,9 @@ import java.math.BigInteger;
 
 public class FileFilterShortStatistics implements FileFilterStatistics{
 
-    private static Integer intsCount = 0;
-    private static Integer floatsCount = 0;
-    private static Integer stringsCount = 0;
+    private Integer intsCount = 0;
+    private Integer floatsCount = 0;
+    private Integer stringsCount = 0;
 
     @Override
     public void updateStatistics(BigDecimal floatData) {

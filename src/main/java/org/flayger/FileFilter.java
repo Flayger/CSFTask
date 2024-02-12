@@ -24,7 +24,7 @@ public class FileFilter {
         argsCommandLineProcessing(args);
 
         try {
-            outputPath = Path.of(new File(FileFilter.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath() + outputFilesPath + "/");
+            outputPath = Path.of(new File(FileFilter.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath() + outputFilesPath);
             Files.createDirectories(outputPath);
         } catch (IOException | URISyntaxException e) {
             System.out.println("Ошибка - Не удалось создать директорию для файлов вывода");
@@ -86,7 +86,7 @@ public class FileFilter {
     }
 
     public static void saveFloatData(String dataFloat) throws IOException {
-        File floatsOutput = new File(outputPath + filePrefix + "floats" + ".txt");
+        File floatsOutput = new File(outputPath + "/" + filePrefix + "floats" + ".txt");
 
         if (isOverride)
             if (floatOverride) {
@@ -104,7 +104,7 @@ public class FileFilter {
     }
 
     public static void saveIntegerData(String dataInteger) throws IOException {
-        File integersOutput = new File(outputPath + filePrefix + "integers" + ".txt");
+        File integersOutput = new File(outputPath + "/" + filePrefix + "integers" + ".txt");
 
         if (isOverride)
             if (intOverride) {
@@ -122,7 +122,7 @@ public class FileFilter {
     }
 
     public static void saveStringData(String dataString) throws IOException {
-        File stringsOutput = new File(outputPath + filePrefix + "strings" + ".txt");
+        File stringsOutput = new File(outputPath + "/" + filePrefix + "strings" + ".txt");
         if (isOverride)
             if (stringOverride) {
                 Files.deleteIfExists(stringsOutput.toPath());

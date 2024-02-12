@@ -6,39 +6,27 @@ import java.math.RoundingMode;
 
 public class FileFilterFullStatistics implements FileFilterStatistics {
 
-    private static Integer intsCount = 0;
-    private static Integer floatsCount = 0;
-    private static Integer stringsCount = 0;
+    private Integer intsCount = 0;
+    private Integer floatsCount = 0;
+    private Integer stringsCount = 0;
 
-    private static BigInteger intsMaxValue;
-    private static BigInteger intsMinValue;
-    private static BigInteger intsAverage = new BigInteger("0");
-    private static BigInteger intsSum = new BigInteger("0");
+    private BigInteger intsMaxValue;
+    private BigInteger intsMinValue;
+    private BigInteger intsAverage = BigInteger.ZERO;
+    private BigInteger intsSum = BigInteger.ZERO;
 
-    private static BigDecimal floatsMaxValue;
-    private static BigDecimal floatsMinValue;
-    private static BigDecimal floatsAverage = new BigDecimal("0.0");
-    private static BigDecimal floatsSum = new BigDecimal("0");
+    private BigDecimal floatsMaxValue;
+    private BigDecimal floatsMinValue;
+    private BigDecimal floatsAverage = BigDecimal.ZERO;
+    private BigDecimal floatsSum = BigDecimal.ZERO;
 
-    private static BigInteger stringsMaxLength;
-    private static BigInteger stringsMinLength;
+    private BigInteger stringsMaxLength;
+    private BigInteger stringsMinLength;
 
     @Override
     public void updateStatistics(BigDecimal floatData) {
         floatsCount++;
-
-        if (floatsMaxValue == null) {
-            floatsMaxValue = floatData;
-        }
-        if (floatsMaxValue.compareTo(floatData) < 0) {
-            floatsMaxValue = floatData;
-        }
-        if (floatsMinValue == null) {
-            floatsMinValue = floatData;
-        }
-        if (floatsMinValue.compareTo(floatData) > 0) {
-            floatsMinValue = floatData;
-        }
+        checkMaxMin(floatData);
 
         floatsSum = floatsSum.add(floatData);
         floatsAverage = floatsSum.divide(BigDecimal.valueOf(intsCount), RoundingMode.HALF_EVEN);
@@ -47,19 +35,7 @@ public class FileFilterFullStatistics implements FileFilterStatistics {
     @Override
     public void updateStatistics(BigInteger intData) {
         intsCount++;
-
-        if (intsMaxValue == null) {
-            intsMaxValue = intData;
-        }
-        if (intsMaxValue.compareTo(intData) < 0) {
-            intsMaxValue = intData;
-        }
-        if (intsMinValue == null) {
-            intsMinValue = intData;
-        }
-        if (intsMinValue.compareTo(intData) > 0) {
-            intsMinValue = intData;
-        }
+        checkMaxMin(intData);
 
         intsSum = intsSum.add(intData);
         intsAverage = intsSum.divide(BigInteger.valueOf(intsCount));
@@ -69,21 +45,36 @@ public class FileFilterFullStatistics implements FileFilterStatistics {
     public void updateStatistics(String stringData) {
         stringsCount++;
 
-        BigInteger lineSize = BigInteger.valueOf(stringData.length());
-        if (stringsMaxLength == null) {
-            stringsMaxLength = lineSize;
-        }
-        if (stringsMaxLength.compareTo(lineSize) < 0) {
-            stringsMaxLength = lineSize;
-        }
-        if (stringsMinLength == null) {
-            stringsMinLength = lineSize;
-        }
-        if (stringsMinLength.compareTo(lineSize) > 0) {
-            stringsMinLength = lineSize;
-        }
+        checkMaxMin(stringData);
     }
 
+    public void checkMaxMin(Object data) {
+        if (data instanceof BigDecimal castData) {
+            if (floatsMaxValue == null || (castData).compareTo(floatsMaxValue) > 0) {
+                floatsMaxValue = castData;
+            }
+            if (floatsMinValue == null || (castData).compareTo(floatsMinValue) < 0) {
+                floatsMinValue = castData;
+            }
+        }
+        if (data instanceof BigInteger castData) {
+            if (intsMaxValue == null || (castData).compareTo(intsMaxValue) > 0) {
+                intsMaxValue = castData;
+            }
+            if (intsMinValue == null || (castData).compareTo(intsMinValue) < 0) {
+                intsMinValue = castData;
+            }
+        }
+        if (data instanceof String castData) {
+            BigInteger lineSize = BigInteger.valueOf(castData.length());
+            if (stringsMaxLength == null || (lineSize).compareTo(stringsMaxLength) > 0) {
+                stringsMaxLength = lineSize;
+            }
+            if (stringsMinLength == null || (lineSize).compareTo(stringsMinLength) < 0) {
+                stringsMinLength = lineSize;
+            }
+        }
+    }
     @Override
     public void showStatistics() {
         System.out.printf("integers stats - count - %S, min - %S, max - %S, average - %S, sum - %S \n", intsCount, intsMinValue, intsMaxValue, intsAverage, intsSum);
