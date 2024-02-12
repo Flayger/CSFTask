@@ -13,12 +13,10 @@ public class FileFilterShortStatistics implements FileFilterStatistics{
     public void updateStatistics(BigDecimal floatData) {
         intsCount++;
     }
-
     @Override
     public void updateStatistics(BigInteger intData) {
         floatsCount++;
     }
-
     @Override
     public void updateStatistics(String stringData) {
         stringsCount++;

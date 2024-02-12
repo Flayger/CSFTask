@@ -44,7 +44,6 @@ public class FileFilterFullStatistics implements FileFilterStatistics {
     @Override
     public void updateStatistics(String stringData) {
         stringsCount++;
-
         checkMaxMin(stringData);
     }
 
@@ -75,6 +74,7 @@ public class FileFilterFullStatistics implements FileFilterStatistics {
             }
         }
     }
+
     @Override
     public void showStatistics() {
         System.out.printf("integers stats - count - %S, min - %S, max - %S, average - %S, sum - %S \n", intsCount, intsMinValue, intsMaxValue, intsAverage, intsSum);

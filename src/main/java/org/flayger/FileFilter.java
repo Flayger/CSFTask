@@ -100,7 +100,6 @@ public class FileFilter {
             BigDecimal data = new BigDecimal(dataFloat);
             selectedStatistics.updateStatistics(data);
         }
-
     }
 
     public static void saveIntegerData(String dataInteger) throws IOException {
@@ -118,7 +117,6 @@ public class FileFilter {
             BigInteger data = new BigInteger(dataInteger);
             selectedStatistics.updateStatistics(data);
         }
-
     }
 
     public static void saveStringData(String dataString) throws IOException {
@@ -134,7 +132,6 @@ public class FileFilter {
         if (selectedStatistics != null) {
             selectedStatistics.updateStatistics(dataString);
         }
-
     }
 
     public static void saveToFile(String data, File file) throws IOException {
